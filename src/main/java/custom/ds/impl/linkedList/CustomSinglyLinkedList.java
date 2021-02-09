@@ -17,7 +17,34 @@ public class CustomSinglyLinkedList<T> {
         this.size+=1;
     }
 
+    public T getFirst(){
+       if(this.size<=0)
+           throw new IndexOutOfBoundsException(0);
+       return (T)head.next.data;
+    }
+
+    public T get(int index){
+        if(this.size<=0 || index>=size)
+            throw new IndexOutOfBoundsException(index);
+        ListNode<T> cur=head.next;
+        int cnt=0;
+        T data = null;
+        while(cur!=null){
+            if(cnt==index){
+                data=cur.data;
+                break;
+            }
+            cnt++;
+            cur=cur.next;
+        }
+        return data;
+    }
+
     public void addLast(T data){
+        if(size<=0){
+            addFirst(data);
+            return;
+        }
         ListNode newNode = new ListNode(data);
         ListNode cur=head.next;
         while(cur.next!=null){
@@ -29,11 +56,34 @@ public class CustomSinglyLinkedList<T> {
 
     public T removeFirst(){
       if(size<=0)
-          return null;
+          throw new IndexOutOfBoundsException(0);
       T data = (T)head.next.data;
       head.next=head.next.next;
       this.size--;
       return data;
+    }
+
+    public T remove(int index){
+        if(size<=0 || index>=size)
+            throw new IndexOutOfBoundsException(index);
+        T data=null;
+        int cnt=0;
+        ListNode<T> cur = head.next,prev=head;
+        while(cur!=null){
+            if(index==cnt){
+                data=cur.data;
+                prev.next=cur.next;
+                this.size--;
+                break;
+            }
+            prev=cur;
+            cur=cur.next;
+            cnt++;
+        }
+        return data;
+    }
+    public int getSize(){
+        return this.size;
     }
 
     @Override
@@ -66,9 +116,10 @@ public class CustomSinglyLinkedList<T> {
 //        CustomSinglyLinkedList<Integer> list = new CustomSinglyLinkedList<>();
 //        list.addFirst(1);
 //        list.addLast(2);
-//        list.addFirst(3);
+//        list.addLast(3);
 //        System.out.println(list.removeFirst());
 //        System.out.println(list.toString());
+//        System.out.println(list.remove(0));
 //    }
 
 }
